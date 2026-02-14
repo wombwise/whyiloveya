@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For You, Babe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Quicksand:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --honey: #E8A838;
+  --honey-light: #F5CB6C;
+  --peach: #FDDCB5;
+  --coral: #F4845F;
+  --cream: #FFF8EE;
+  --warm-white: #FFFDF9;
+  --blush: #F7C5A8;
+  --deep-gold: #C4882B;
+  --text: #5C3D1A;
+  --text-light: #8B6B4A;
+}
+
+body {
+  font-family: 'Quicksand', sans-serif;
+  background: var(--cream);
+  color: var(--text);
+  overflow: hidden;
+  height: 100dvh;
+  width: 100vw;
+}
+
+/* FLOATING HEARTS */
+.hearts-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.floating-heart {
+  position: absolute;
+  bottom: -60px;
+  opacity: 0;
+  animation: floatUp linear forwards;
+  font-size: 20px;
+  filter: blur(0.5px);
+}
+
+@keyframes floatUp {
+  0% { opacity: 0; transform: translateY(0) rotate(0deg) scale(0.5); }
+  10% { opacity: 0.6; }
+  50% { opacity: 0.4; }
+  100% { opacity: 0; transform: translateY(-110vh) rotate(45deg) scale(1.2); }
+}
+
+/* INTRO SCREEN */
+.intro-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(160deg, var(--cream) 0%, var(--peach) 50%, var(--blush) 100%);
+  transition: opacity 1s ease, transform 1s ease;
+}
+
+.intro-screen.hidden {
+  opacity: 0;
+  transform: scale(1.05);
+  pointer-events: none;
+}
+
+.intro-quote {
+  font-family: 'Dancing Script', cursive;
+  font-size: clamp(1.1rem, 3.5vw, 1.6rem);
+  color: var(--text-light);
+  opacity: 0;
+  animation: fadeInUp 1.5s ease 0.5s forwards;
+  text-align: center;
+  padding: 0 2rem;
+  line-height: 1.6;
+}
+
+.intro-title {
+  font-family: 'Dancing Script', cursive;
+  font-size: clamp(2.2rem, 8vw, 4.5rem);
+  color: var(--deep-gold);
+  opacity: 0;
+  animation: fadeInUp 1.5s ease 1.8s forwards;
+  margin-top: 1.5rem;
+  text-shadow: 0 2px 15px rgba(200, 140, 50, 0.2);
+}
+
+.intro-subtitle {
+  font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+  color: var(--text-light);
+  opacity: 0;
+  animation: fadeInUp 1.2s ease 3s forwards;
+  margin-top: 0.8rem;
+  font-weight: 300;
+  letter-spacing: 0.5px;
+}
+
+.intro-enter-btn {
+  opacity: 0;
+  animation: fadeInUp 1s ease 4s forwards;
+  margin-top: 3rem;
+  padding: 1rem 3rem;
+  border: 2px solid var(--honey);
+  background: transparent;
+  color: var(--deep-gold);
+  font-family: 'Quicksand', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  text-transform: uppercase;
+}
+
+.intro-enter-btn:hover {
+  background: var(--honey);
+  color: white;
+  transform: scale(1.05);
+  box-shadow: 0 8px 30px rgba(232, 168, 56, 0.35);
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(25px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* MAIN JAR SCREEN */
+.jar-screen {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100dvh;
+  padding: 1.5rem;
+  position: relative;
+  z-index: 1;
+  background: linear-gradient(180deg, var(--warm-white) 0%, var(--peach) 100%);
+}
+
+.jar-screen.active {
+  display: flex;
+  animation: fadeIn 1s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.jar-header {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.jar-header h2 {
+  font-family: 'Dancing Script', cursive;
+  font-size: clamp(1.5rem, 5vw, 2.2rem);
+  color: var(--deep-gold);
+}
+
+.note-counter {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-top: 0.4rem;
+  font-weight: 300;
+}
+
+/* THE JAR */
+.jar-wrapper {
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.jar-wrapper:hover {
+  transform: scale(1.03);
+}
+
+.jar-wrapper:active {
+  transform: scale(0.97);
+}
+
+.jar {
+  position: relative;
+  width: clamp(180px, 45vw, 240px);
+  height: clamp(240px, 55vw, 320px);
+}
+
+.jar-lid {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 65%;
+  height: 30px;
+  background: linear-gradient(180deg, #D4A04A, #B8862D);
+  border-radius: 8px 8px 2px 2px;
+  z-index: 3;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.jar-lid::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: -8%;
+  width: 116%;
+  height: 12px;
+  background: linear-gradient(180deg, #C4942E, #A87828);
+  border-radius: 3px;
+}
+
+.jar-body {
+  position: absolute;
+  top: 35px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: calc(100% - 35px);
+  background: linear-gradient(135deg, rgba(255,255,255,0.6) 0%, rgba(255,248,238,0.3) 40%, rgba(245,203,108,0.15) 100%);
+  border: 2.5px solid rgba(200, 170, 120, 0.4);
+  border-radius: 12px 12px 35px 35px;
+  overflow: hidden;
+  box-shadow:
+    inset 0 0 30px rgba(255,255,255,0.4),
+    0 8px 32px rgba(180, 140, 60, 0.15);
+}
+
+.jar-body::before {
+  content: '';
+  position: absolute;
+  top: 10%;
+  left: 8%;
+  width: 25%;
+  height: 60%;
+  background: linear-gradient(180deg, rgba(255,255,255,0.5), transparent);
+  border-radius: 50%;
+  filter: blur(4px);
+}
+
+.jar-notes {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 75%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 8px;
+  gap: 3px;
+}
+
+.jar-note-mini {
+  width: clamp(16px, 4vw, 22px);
+  height: clamp(10px, 2.5vw, 14px);
+  border-radius: 2px;
+  transform: rotate(var(--rot));
+  transition: all 0.3s ease;
+}
+
+.jar-note-mini.removed {
+  opacity: 0;
+  transform: scale(0) rotate(var(--rot));
+}
+
+.tap-hint {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  color: var(--text-light);
+  font-weight: 300;
+  opacity: 0.7;
+  animation: pulse 2.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.9; }
+}
+
+/* NOTE MODAL */
+.note-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(92, 61, 26, 0.4);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.note-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.note-card {
+  background: var(--cream);
+  border-radius: 16px;
+  padding: 2.5rem 2rem;
+  max-width: 360px;
+  width: 90%;
+  text-align: center;
+  transform: scale(0.7) rotate(-5deg);
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 20px 60px rgba(92, 61, 26, 0.25);
+  position: relative;
+}
+
+.note-overlay.active .note-card {
+  transform: scale(1) rotate(0deg);
+}
+
+.note-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: var(--honey);
+  margin-bottom: 1.2rem;
+  font-weight: 600;
+}
+
+.note-text {
+  font-family: 'Dancing Script', cursive;
+  font-size: clamp(1.3rem, 5vw, 1.8rem);
+  color: var(--text);
+  line-height: 1.5;
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.note-number {
+  margin-top: 1.5rem;
+  font-size: 0.8rem;
+  color: var(--text-light);
+  font-weight: 300;
+}
+
+.note-close-btn {
+  margin-top: 1.5rem;
+  padding: 0.6rem 2rem;
+  border: 1.5px solid var(--blush);
+  background: transparent;
+  color: var(--text-light);
+  font-family: 'Quicksand', sans-serif;
+  font-size: 0.85rem;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.note-close-btn:hover {
+  background: var(--blush);
+  color: white;
+}
+
+/* SURPRISE NOTE */
+.note-card.surprise {
+  background: linear-gradient(135deg, var(--honey-light), var(--honey));
+  color: white;
+}
+
+.note-card.surprise .note-label {
+  color: white;
+  opacity: 0.9;
+}
+
+.note-card.surprise .note-text {
+  color: white;
+  font-size: clamp(1.4rem, 5vw, 2rem);
+}
+
+.note-card.surprise .note-number {
+  color: rgba(255,255,255,0.8);
+}
+
+.note-card.surprise .note-close-btn {
+  border-color: rgba(255,255,255,0.5);
+  color: white;
+}
+
+.note-card.surprise .note-close-btn:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+/* ALL DONE SCREEN */
+.done-screen {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100dvh;
+  padding: 2rem;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  background: linear-gradient(180deg, var(--warm-white) 0%, var(--peach) 100%);
+}
+
+.done-screen.active {
+  display: flex;
+  animation: fadeIn 1.5s ease;
+}
+
+.done-screen h2 {
+  font-family: 'Dancing Script', cursive;
+  font-size: clamp(2rem, 7vw, 3.5rem);
+  color: var(--deep-gold);
+}
+
+.done-screen p {
+  margin-top: 1rem;
+  font-size: 1.1rem;
+  color: var(--text-light);
+  line-height: 1.7;
+  max-width: 400px;
+}
+
+.restart-btn {
+  margin-top: 2rem;
+  padding: 0.8rem 2.5rem;
+  border: 2px solid var(--honey);
+  background: transparent;
+  color: var(--deep-gold);
+  font-family: 'Quicksand', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.restart-btn:hover {
+  background: var(--honey);
+  color: white;
+}
+
+/* SPARKLE BURST */
+.sparkle {
+  position: fixed;
+  pointer-events: none;
+  z-index: 150;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  animation: sparkleBurst 0.8s ease-out forwards;
+}
+
+@keyframes sparkleBurst {
+  0% { opacity: 1; transform: translate(0,0) scale(1); }
+  100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(0); }
+}
+</style>
+</head>
+<body>
+
+<!-- FLOATING HEARTS -->
+<div class="hearts-container" id="heartsContainer"></div>
+
+<!-- INTRO SCREEN -->
+<div class="intro-screen" id="introScreen">
+  <p class="intro-quote">"I love you not only for what you are,<br>but for what I am when I am with you."</p>
+  <h1 class="intro-title">Happy Valentine's Day, Babe</h1>
+  <p class="intro-subtitle">I made you a little something</p>
+  <button class="intro-enter-btn" id="enterBtn">Open Your Gift</button>
+</div>
+
+<!-- JAR SCREEN -->
+<div class="jar-screen" id="jarScreen">
+  <div class="jar-header">
+    <h2>Why I Love You</h2>
+    <p class="note-counter" id="noteCounter">Tap the jar to pull a note</p>
+  </div>
+
+  <div class="jar-wrapper" id="jarWrapper">
+    <div class="jar">
+      <div class="jar-lid"></div>
+      <div class="jar-body">
+        <div class="jar-notes" id="jarNotes"></div>
+      </div>
+    </div>
+  </div>
+
+  <p class="tap-hint" id="tapHint">tap the jar</p>
+</div>
+
+<!-- NOTE OVERLAY -->
+<div class="note-overlay" id="noteOverlay">
+  <div class="note-card" id="noteCard">
+    <p class="note-label" id="noteLabel">I love you because...</p>
+    <div class="note-text" id="noteText"></div>
+    <p class="note-number" id="noteNumber"></p>
+    <button class="note-close-btn" id="noteCloseBtn">put it back</button>
+  </div>
+</div>
+
+<!-- DONE SCREEN -->
+<div class="done-screen" id="doneScreen">
+  <h2>And a million more reasons...</h2>
+  <p>Every single one of those is true, and there are so many more I couldn't fit in the jar.</p>
+  <p style="margin-top: 1.5rem; font-family: 'Dancing Script', cursive; font-size: 1.5rem; color: var(--deep-gold);">I love you endlessly.</p>
+  <button class="restart-btn" id="restartBtn">Read them again</button>
+</div>
+
+<script>
+// ═══════════════════════════════════════════
+// NOTES - Replace these with your real reasons!
+// The LAST note is the surprise note.
+// ═══════════════════════════════════════════
+var notes = [
+  "The way you laugh when you think no one's watching",
+  "How you always know exactly what to say",
+  "Your smile first thing in the morning",
+  "The way you hold my hand a little tighter in crowds",
+  "How passionate you are about the things you love",
+  "Your patience when I'm being difficult",
+  "The little notes you leave for me",
+  "How you make even ordinary days feel special",
+  "Your terrible jokes that somehow always make me laugh",
+  "The way you look at me like I'm your whole world",
+  "How safe I feel when I'm with you",
+  "Your kindness to strangers",
+  "The way you dance when you think no one is looking",
+  "How you never give up on us",
+  "Your voice when you say my name",
+  "The way you play with my hair",
+  "How you always save the last bite for me",
+  "Your hugs that make everything better",
+  "The way you believe in me even when I don't",
+  "How you remember the little things I tell you",
+  "Your courage to be vulnerable with me",
+  "The way you light up every room you walk into",
+  "How you make me want to be a better person",
+  "Your late night conversations that go on forever",
+  "The way you scrunch your nose when you're happy",
+  "How you always know when I need a hug",
+  "Your contagious excitement about the little things",
+  "The way you fit perfectly in my arms",
+  "How you make my heart race even after all this time",
+  "Your beautiful soul inside and out",
+  "The way every love song reminds me of you",
+  "How you turned my whole world into something beautiful",
+  "And the biggest reason of all... because you chose me. And I'd choose you in every lifetime. Forever yours."
+];
+
+var noteColors = [
+  '#FDDCB5', '#F7C5A8', '#F5CB6C', '#FFE4C9',
+  '#FFEBD4', '#F4D9A0', '#FFD6BA', '#FDE2C8'
+];
+
+var currentIndex = 0;
+var shuffledNotes = [];
+var surpriseNote = '';
+
+// Audio context for chime sound
+var audioCtx = null;
+function playChime() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  var o = audioCtx.createOscillator();
+  var g = audioCtx.createGain();
+  o.connect(g);
+  g.connect(audioCtx.destination);
+  o.type = 'sine';
+  o.frequency.setValueAtTime(880, audioCtx.currentTime);
+  o.frequency.exponentialRampToValueAtTime(1320, audioCtx.currentTime + 0.08);
+  o.frequency.exponentialRampToValueAtTime(1100, audioCtx.currentTime + 0.2);
+  g.gain.setValueAtTime(0.15, audioCtx.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.6);
+  o.start(audioCtx.currentTime);
+  o.stop(audioCtx.currentTime + 0.6);
+}
+
+// Floating hearts
+function spawnHeart() {
+  var heart = document.createElement('div');
+  heart.className = 'floating-heart';
+  var hearts = ['\u2764', '\u2665', '\uD83D\uDC9B', '\uD83E\uDDE1', '\uD83D\uDC95'];
+  heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+  heart.style.left = Math.random() * 100 + '%';
+  heart.style.fontSize = (14 + Math.random() * 18) + 'px';
+  heart.style.animationDuration = (8 + Math.random() * 10) + 's';
+  heart.style.animationDelay = '0s';
+  document.getElementById('heartsContainer').appendChild(heart);
+  setTimeout(function() { heart.remove(); }, 20000);
+}
+setInterval(spawnHeart, 1200);
+setTimeout(spawnHeart, 300);
+setTimeout(spawnHeart, 800);
+
+// Sparkle burst effect
+function burstSparkles(x, y) {
+  for (var i = 0; i < 12; i++) {
+    var s = document.createElement('div');
+    s.className = 'sparkle';
+    var angle = (Math.PI * 2 / 12) * i;
+    var dist = 40 + Math.random() * 60;
+    s.style.left = x + 'px';
+    s.style.top = y + 'px';
+    s.style.setProperty('--tx', Math.cos(angle) * dist + 'px');
+    s.style.setProperty('--ty', Math.sin(angle) * dist + 'px');
+    s.style.background = noteColors[Math.floor(Math.random() * noteColors.length)];
+    document.body.appendChild(s);
+    (function(el) { setTimeout(function() { el.remove(); }, 800); })(s);
+  }
+}
+
+// Initialize
+function init() {
+  surpriseNote = notes[notes.length - 1];
+  var regularNotes = notes.slice(0, -1);
+  shuffledNotes = regularNotes.sort(function() { return Math.random() - 0.5; });
+  shuffledNotes.push(surpriseNote);
+  currentIndex = 0;
+
+  // Clear and fill jar with mini notes
+  var jarNotesEl = document.getElementById('jarNotes');
+  while (jarNotesEl.firstChild) {
+    jarNotesEl.removeChild(jarNotesEl.firstChild);
+  }
+  for (var i = 0; i < shuffledNotes.length; i++) {
+    var mini = document.createElement('div');
+    mini.className = 'jar-note-mini';
+    mini.style.background = noteColors[i % noteColors.length];
+    mini.style.setProperty('--rot', (Math.random() * 40 - 20) + 'deg');
+    jarNotesEl.appendChild(mini);
+  }
+}
+
+// INTRO -> JAR
+document.getElementById('enterBtn').addEventListener('click', function() {
+  playChime();
+  document.getElementById('introScreen').classList.add('hidden');
+  setTimeout(function() {
+    document.getElementById('jarScreen').classList.add('active');
+  }, 800);
+});
+
+// JAR TAP -> SHOW NOTE
+document.getElementById('jarWrapper').addEventListener('click', function(e) {
+  if (currentIndex >= shuffledNotes.length) return;
+
+  playChime();
+  burstSparkles(e.clientX, e.clientY);
+
+  var isSurprise = currentIndex === shuffledNotes.length - 1;
+  var noteTextContent = shuffledNotes[currentIndex];
+
+  // Remove a mini note from jar
+  var minis = document.querySelectorAll('.jar-note-mini:not(.removed)');
+  if (minis.length > 0) {
+    minis[minis.length - 1].classList.add('removed');
+  }
+
+  // Show note
+  var card = document.getElementById('noteCard');
+  document.getElementById('noteText').textContent = noteTextContent;
+  document.getElementById('noteNumber').textContent = (currentIndex + 1) + ' of ' + shuffledNotes.length;
+
+  if (isSurprise) {
+    card.classList.add('surprise');
+    document.getElementById('noteLabel').textContent = 'The biggest reason...';
+  } else {
+    card.classList.remove('surprise');
+    document.getElementById('noteLabel').textContent = 'I love you because...';
+  }
+
+  document.getElementById('noteOverlay').classList.add('active');
+  currentIndex++;
+
+  // Update counter
+  var remaining = shuffledNotes.length - currentIndex;
+  if (remaining > 0) {
+    document.getElementById('noteCounter').textContent = remaining + ' note' + (remaining === 1 ? '' : 's') + ' left in the jar';
+  } else {
+    document.getElementById('noteCounter').textContent = 'The jar is empty now...';
+  }
+
+  // Hide tap hint after first pull
+  document.getElementById('tapHint').style.display = 'none';
+});
+
+// CLOSE NOTE
+document.getElementById('noteCloseBtn').addEventListener('click', function() {
+  document.getElementById('noteOverlay').classList.remove('active');
+
+  if (currentIndex >= shuffledNotes.length) {
+    setTimeout(function() {
+      document.getElementById('jarScreen').classList.remove('active');
+      document.getElementById('doneScreen').classList.add('active');
+    }, 600);
+  }
+});
+
+// Close note by clicking overlay background
+document.getElementById('noteOverlay').addEventListener('click', function(e) {
+  if (e.target === document.getElementById('noteOverlay')) {
+    document.getElementById('noteCloseBtn').click();
+  }
+});
+
+// RESTART
+document.getElementById('restartBtn').addEventListener('click', function() {
+  document.getElementById('doneScreen').classList.remove('active');
+  init();
+  document.getElementById('tapHint').style.display = '';
+  document.getElementById('noteCounter').textContent = 'Tap the jar to pull a note';
+  document.getElementById('jarScreen').classList.add('active');
+});
+
+// Go!
+init();
+</script>
+</body>
+</html>
