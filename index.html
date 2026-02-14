@@ -726,39 +726,27 @@ body {
 
 <script>
 var notes = [
-  "The way you laugh when you think no one's watching",
-  "How you always know exactly what to say",
-  "Your smile first thing in the morning",
-  "The way you hold my hand a little tighter in crowds",
-  "How passionate you are about the things you love",
-  "Your patience when I'm being difficult",
-  "The little notes you leave for me",
-  "How you make even ordinary days feel special",
-  "Your terrible jokes that somehow always make me laugh",
-  "The way you look at me like I'm your whole world",
-  "How safe I feel when I'm with you",
-  "Your kindness to strangers",
-  "The way you dance when you think no one is looking",
-  "How you never give up on us",
-  "Your voice when you say my name",
-  "The way you play with my hair",
-  "How you always save the last bite for me",
-  "Your hugs that make everything better",
-  "The way you believe in me even when I don't",
-  "How you remember the little things I tell you",
-  "Your courage to be vulnerable with me",
-  "The way you light up every room you walk into",
-  "How you make me want to be a better person",
-  "Your late night conversations that go on forever",
-  "The way you scrunch your nose when you're happy",
-  "How you always know when I need a hug",
-  "Your contagious excitement about the little things",
-  "The way you fit perfectly in my arms",
-  "How you make my heart race even after all this time",
-  "Your beautiful soul inside and out",
-  "The way every love song reminds me of you",
-  "How you turned my whole world into something beautiful",
-  "And the biggest reason of all... because you chose me. And I'd choose you in every lifetime. Forever yours."
+  "You are an amazing teacher and I love the cool tech tricks you share with me that unlock new possibilities in my work process and make it smoother to reach my goals.",
+  "You listen with amazing awareness and care for the people around you.",
+  "You give me the best squeezes.",
+  "It's epic to wake up together because we start it off right\u2026 \"it's gonna be a great day.\"",
+  "You help me stay strong on self-care habits like going to bed on time.",
+  "You're super goal oriented, but you also know how to relax.",
+  "You soak in the little everyday moments of life and remind me to live more presently.",
+  "You are so giving to your community at Urban Dharma.",
+  "You have such a groundedness to you that really brings steadiness to be around. And it's special to feel that because you say it's taken work to get there.",
+  "I loveeeee dancing together and playing around and doing lifts.",
+  "You're super duper strong.",
+  "When you hold me I feel so so relaxed and safe in your arms.",
+  "When we read together, we both get to grow in similar ways and share that mutual journey.",
+  "You celebrate me resting and remind me how important that is through example.",
+  "You show me it's possible to be calm and still get shit done.",
+  "You know how to prioritize really well.",
+  "I like your probabilities.",
+  "You're sensitive to the point you pick up on when I'm in a weird state before I say anything.",
+  "You introduce me to new ideas, thoughts, and possibilities.",
+  "You're vulnerable and share about your decisions so it inspires me to do the same.",
+  "You're funny. And have dad-like jokes that you usually crack up at yourself. You don't think I'm very funny except when I say that line."
 ];
 
 var noteColors = [
@@ -826,10 +814,7 @@ function burstSparkles(x, y) {
 }
 
 function init() {
-  surpriseNote = notes[notes.length - 1];
-  var regularNotes = notes.slice(0, -1);
-  shuffledNotes = regularNotes.sort(function() { return Math.random() - 0.5; });
-  shuffledNotes.push(surpriseNote);
+  shuffledNotes = notes.slice().sort(function() { return Math.random() - 0.5; });
   currentIndex = 0;
 
   var jarNotesEl = document.getElementById('jarNotes');
@@ -864,27 +849,18 @@ document.getElementById('jarWrapper').addEventListener('click', function(e) {
   void wrapper.offsetWidth;
   wrapper.classList.add('wobble');
 
-  var isSurprise = currentIndex === shuffledNotes.length - 1;
   var noteTextContent = shuffledNotes[currentIndex];
 
   var minis = document.querySelectorAll('.jar-note-mini:not(.removed)');
   if (minis.length > 0) minis[minis.length - 1].classList.add('removed');
 
   var card = document.getElementById('noteCard');
-  // Reset flip state
-  card.classList.remove('flipped');
+  card.classList.remove('flipped', 'surprise');
 
   // Set front content
   document.getElementById('noteFrontNumber').textContent = '#' + (currentIndex + 1);
-  if (isSurprise) {
-    card.classList.add('surprise');
-    document.getElementById('noteFrontLabel').textContent = '// the biggest reason';
-    document.getElementById('noteLabel').textContent = '// the biggest reason';
-  } else {
-    card.classList.remove('surprise');
-    document.getElementById('noteFrontLabel').textContent = '// reason';
-    document.getElementById('noteLabel').textContent = '// reason #' + (currentIndex + 1);
-  }
+  document.getElementById('noteFrontLabel').textContent = '// reason';
+  document.getElementById('noteLabel').textContent = '// reason #' + (currentIndex + 1);
 
   // Set back content
   document.getElementById('noteText').textContent = noteTextContent;
