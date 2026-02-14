@@ -15,10 +15,10 @@
   --surface-2: #1C1C1C;
   --border: #2A2A2A;
   --border-light: #333;
-  --amber: #E8A838;
-  --amber-dim: #C4882B;
-  --amber-glow: rgba(232, 168, 56, 0.15);
-  --amber-bright: #F5CB6C;
+  --amber: #60A5FA;
+  --amber-dim: #3B82F6;
+  --amber-glow: rgba(96, 165, 250, 0.15);
+  --amber-bright: #93C5FD;
   --rose: #E8916D;
   --text: #ffffff;
   --text-dim: #ffffff;
@@ -46,8 +46,8 @@ body {
   pointer-events: none;
   z-index: 0;
   background-image:
-    linear-gradient(rgba(232, 168, 56, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(232, 168, 56, 0.03) 1px, transparent 1px);
+    linear-gradient(rgba(96, 165, 250, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(96, 165, 250, 0.03) 1px, transparent 1px);
   background-size: 40px 40px;
 }
 
@@ -57,7 +57,7 @@ body {
   inset: 0;
   pointer-events: none;
   z-index: 0;
-  background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(232, 168, 56, 0.06), transparent);
+  background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(96, 165, 250, 0.06), transparent);
 }
 
 /* ── FLOATING HEARTS (subtle) ── */
@@ -75,7 +75,7 @@ body {
   opacity: 0;
   animation: floatUp linear forwards;
   font-family: 'JetBrains Mono', monospace;
-  color: var(--amber);
+  color: rgba(96, 165, 250, 0.6);
 }
 
 @keyframes floatUp {
@@ -204,7 +204,7 @@ body {
 
 .jar-header h2 {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.65rem;
+  font-size: clamp(1.1rem, 4vw, 1.5rem);
   color: #fff;
   font-weight: 400;
   letter-spacing: 3px;
@@ -289,15 +289,15 @@ body {
     180deg,
     rgba(255, 255, 255, 0.07) 0%,
     rgba(255, 255, 255, 0.03) 40%,
-    rgba(232, 168, 56, 0.04) 100%
+    rgba(96, 165, 250, 0.04) 100%
   );
   border: 1.5px solid rgba(255, 255, 255, 0.1);
   border-radius: 6px 6px 28px 28px;
   overflow: hidden;
   box-shadow:
-    0 0 60px rgba(232, 168, 56, 0.08),
+    0 0 60px rgba(96, 165, 250, 0.08),
     0 20px 50px rgba(0, 0, 0, 0.3),
-    inset 0 0 40px rgba(232, 168, 56, 0.03),
+    inset 0 0 40px rgba(96, 165, 250, 0.03),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
@@ -369,7 +369,7 @@ body {
   transform: translateX(-50%);
   width: 80%;
   height: 40px;
-  background: radial-gradient(ellipse, rgba(232, 168, 56, 0.25), transparent);
+  background: radial-gradient(ellipse, rgba(96, 165, 250, 0.25), transparent);
   border-radius: 50%;
   filter: blur(14px);
   animation: glowPulse 3s ease-in-out infinite;
@@ -419,24 +419,86 @@ body {
   pointer-events: all;
 }
 
+/* 3D flip container */
 .note-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 2rem 1.8rem 1.8rem;
   max-width: 380px;
   width: 90%;
-  text-align: center;
+  height: 260px;
+  perspective: 1000px;
+  position: relative;
   transform: scale(0.9) translateY(20px);
   transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
   opacity: 0;
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4), 0 0 40px var(--amber-glow);
-  position: relative;
 }
 
 .note-overlay.active .note-card {
   transform: scale(1) translateY(0);
   opacity: 1;
+}
+
+.note-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+}
+
+.note-card.flipped .note-card-inner {
+  transform: rotateY(180deg);
+}
+
+.note-front, .note-back {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4), 0 0 40px var(--amber-glow);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem 1.8rem;
+}
+
+/* FRONT — tap to reveal */
+.note-front {
+  cursor: pointer;
+}
+
+.note-front-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: var(--amber-dim);
+  margin-bottom: 1rem;
+}
+
+.note-front-number {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: var(--amber);
+  line-height: 1;
+}
+
+.note-front-hint {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  margin-top: 1.2rem;
+  letter-spacing: 1px;
+}
+
+/* BACK — the reason */
+.note-back {
+  transform: rotateY(180deg);
+  position: relative;
 }
 
 /* X close */
@@ -487,7 +549,6 @@ body {
   font-weight: 300;
   color: var(--text);
   line-height: 1.6;
-  min-height: 70px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -504,11 +565,14 @@ body {
 }
 
 /* Surprise note */
-.note-card.surprise {
+.note-card.surprise .note-front,
+.note-card.surprise .note-back {
   border-color: var(--amber-dim);
   box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5), 0 0 60px var(--amber-glow);
 }
 
+.note-card.surprise .note-front-number { color: var(--amber-bright); }
+.note-card.surprise .note-front-label { color: var(--amber); }
 .note-card.surprise .note-label { color: var(--amber); }
 .note-card.surprise .note-text { color: var(--amber-bright); font-weight: 400; }
 .note-card.surprise .note-number { color: var(--amber-dim); }
@@ -634,12 +698,21 @@ body {
 <!-- NOTE OVERLAY -->
 <div class="note-overlay" id="noteOverlay">
   <div class="note-card" id="noteCard">
-    <button class="note-close-x" id="noteCloseBtn" aria-label="Close">
-      <svg viewBox="0 0 14 14" fill="none"><line x1="1" y1="1" x2="13" y2="13"/><line x1="13" y1="1" x2="1" y2="13"/></svg>
-    </button>
-    <p class="note-label" id="noteLabel">// reason</p>
-    <div class="note-text" id="noteText"></div>
-    <p class="note-number" id="noteNumber"></p>
+    <div class="note-card-inner" id="noteCardInner">
+      <div class="note-front" id="noteFront">
+        <p class="note-front-label" id="noteFrontLabel">// reason</p>
+        <p class="note-front-number" id="noteFrontNumber">#1</p>
+        <p class="note-front-hint">tap to flip<span class="blink">_</span></p>
+      </div>
+      <div class="note-back">
+        <button class="note-close-x" id="noteCloseBtn" aria-label="Close">
+          <svg viewBox="0 0 14 14" fill="none"><line x1="1" y1="1" x2="13" y2="13"/><line x1="13" y1="1" x2="1" y2="13"/></svg>
+        </button>
+        <p class="note-label" id="noteLabel">// reason</p>
+        <div class="note-text" id="noteText"></div>
+        <p class="note-number" id="noteNumber"></p>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -779,7 +852,7 @@ document.getElementById('enterBtn').addEventListener('click', function() {
   }, 600);
 });
 
-// JAR TAP
+// JAR TAP — show card (unflipped)
 document.getElementById('jarWrapper').addEventListener('click', function(e) {
   if (currentIndex >= shuffledNotes.length) return;
 
@@ -798,16 +871,24 @@ document.getElementById('jarWrapper').addEventListener('click', function(e) {
   if (minis.length > 0) minis[minis.length - 1].classList.add('removed');
 
   var card = document.getElementById('noteCard');
-  document.getElementById('noteText').textContent = noteTextContent;
-  document.getElementById('noteNumber').textContent = '[' + (currentIndex + 1) + '/' + shuffledNotes.length + ']';
+  // Reset flip state
+  card.classList.remove('flipped');
 
+  // Set front content
+  document.getElementById('noteFrontNumber').textContent = '#' + (currentIndex + 1);
   if (isSurprise) {
     card.classList.add('surprise');
+    document.getElementById('noteFrontLabel').textContent = '// the biggest reason';
     document.getElementById('noteLabel').textContent = '// the biggest reason';
   } else {
     card.classList.remove('surprise');
+    document.getElementById('noteFrontLabel').textContent = '// reason';
     document.getElementById('noteLabel').textContent = '// reason #' + (currentIndex + 1);
   }
+
+  // Set back content
+  document.getElementById('noteText').textContent = noteTextContent;
+  document.getElementById('noteNumber').textContent = '[' + (currentIndex + 1) + '/' + shuffledNotes.length + ']';
 
   document.getElementById('noteOverlay').classList.add('active');
   currentIndex++;
@@ -815,15 +896,25 @@ document.getElementById('jarWrapper').addEventListener('click', function(e) {
   document.getElementById('tapHint').style.display = 'none';
 });
 
-// CLOSE NOTE
+// FLIP card on front tap
+document.getElementById('noteFront').addEventListener('click', function() {
+  playChime();
+  document.getElementById('noteCard').classList.add('flipped');
+});
+
+// CLOSE NOTE — unflip then dismiss
 function closeNote() {
-  document.getElementById('noteOverlay').classList.remove('active');
-  if (currentIndex >= shuffledNotes.length) {
-    setTimeout(function() {
-      document.getElementById('jarScreen').classList.remove('active');
-      document.getElementById('doneScreen').classList.add('active');
-    }, 500);
-  }
+  var card = document.getElementById('noteCard');
+  card.classList.remove('flipped');
+  setTimeout(function() {
+    document.getElementById('noteOverlay').classList.remove('active');
+    if (currentIndex >= shuffledNotes.length) {
+      setTimeout(function() {
+        document.getElementById('jarScreen').classList.remove('active');
+        document.getElementById('doneScreen').classList.add('active');
+      }, 500);
+    }
+  }, 350);
 }
 
 document.getElementById('noteCloseBtn').addEventListener('click', closeNote);
