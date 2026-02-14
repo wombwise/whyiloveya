@@ -91,7 +91,7 @@ body {
   font-size: clamp(2.2rem, 8vw, 4.5rem);
   color: var(--deep-gold);
   opacity: 0;
-  animation: fadeInUp 1.5s ease 1.8s forwards;
+  animation: fadeInUp 1.5s ease 0.5s forwards;
   margin-top: 1.5rem;
   text-shadow: 0 2px 15px rgba(200, 140, 50, 0.2);
 }
@@ -100,7 +100,7 @@ body {
   font-size: clamp(0.9rem, 2.5vw, 1.1rem);
   color: var(--text-light);
   opacity: 0;
-  animation: fadeInUp 1.2s ease 3s forwards;
+  animation: fadeInUp 1.2s ease 1.8s forwards;
   margin-top: 0.8rem;
   font-weight: 300;
   letter-spacing: 0.5px;
@@ -108,7 +108,7 @@ body {
 
 .intro-enter-btn {
   opacity: 0;
-  animation: fadeInUp 1s ease 4s forwards;
+  animation: fadeInUp 1s ease 2.8s forwards;
   margin-top: 3rem;
   padding: 1rem 3rem;
   border: 2px solid var(--honey);
@@ -266,11 +266,12 @@ body {
 }
 
 .jar-note-mini {
-  width: clamp(16px, 4vw, 22px);
-  height: clamp(10px, 2.5vw, 14px);
-  border-radius: 2px;
+  width: clamp(14px, 3.5vw, 18px);
+  height: clamp(13px, 3.2vw, 16px);
   transform: rotate(var(--rot));
   transition: all 0.3s ease;
+  clip-path: path('M9 1.5C7.5 0 5.5 0 4 1.2C2.5 2.4 2 4.5 3 6.5C4 8.5 9 12.5 9 12.5C9 12.5 14 8.5 15 6.5C16 4.5 15.5 2.4 14 1.2C12.5 0 10.5 0 9 1.5Z');
+  clip-path: polygon(50% 100%, 0% 38%, 3% 20%, 12% 6%, 25% 0%, 40% 0%, 50% 12%, 60% 0%, 75% 0%, 88% 6%, 97% 20%, 100% 38%);
 }
 
 .jar-note-mini.removed {
@@ -482,7 +483,6 @@ body {
 
 <!-- INTRO SCREEN -->
 <div class="intro-screen" id="introScreen">
-  <p class="intro-quote">"I love you not only for what you are,<br>but for what I am when I am with you."</p>
   <h1 class="intro-title">Happy Valentine's Day, Babe</h1>
   <p class="intro-subtitle">I made you a little something</p>
   <button class="intro-enter-btn" id="enterBtn">Open Your Gift</button>
