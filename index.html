@@ -891,15 +891,15 @@ document.getElementById('jarWrapper').addEventListener('click', function(e) {
   document.getElementById('noteNumber').textContent = '[' + (currentIndex + 1) + '/' + shuffledNotes.length + ']';
 
   document.getElementById('noteOverlay').classList.add('active');
+
+  // Auto-flip after a brief moment
+  setTimeout(function() {
+    document.getElementById('noteCard').classList.add('flipped');
+  }, 400);
+
   currentIndex++;
 
   document.getElementById('tapHint').style.display = 'none';
-});
-
-// FLIP card on front tap
-document.getElementById('noteFront').addEventListener('click', function() {
-  playChime();
-  document.getElementById('noteCard').classList.add('flipped');
 });
 
 // CLOSE NOTE — unflip then dismiss
